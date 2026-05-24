@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Игровой клуб "Энигма"</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>🎮 Игровой клуб "Энигма"</h1>
+        
+        <!-- Панель поиска и сортировки -->
+        <div class="controls">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="🔍 Поиск по названию...">
+                <button id="searchBtn">Найти</button>
+                <button id="clearSearchBtn">Сбросить</button>
+            </div>
+            <div class="sort-box">
+                <label>Сортировка:</label>
+                <button id="sortByNameBtn" class="sort-btn">По названию ↑</button>
+            </div>
+        </div>
+
+        <!-- Список игр -->
+        <div class="games-list" id="gamesList"></div>
+
+        <!-- Пагинация -->
+        <div class="pagination" id="pagination"></div>
+
+        <!-- Форма добавления -->
+        <div class="add-game">
+            <h3>➕ Добавить новую игру</h3>
+            <input type="text" id="newName" placeholder="Название игры" required>
+            <input type="text" id="newPrice" placeholder="Цена за час" required>
+            <input type="text" id="newGenre" placeholder="Жанр">
+            <button id="addBtn">Добавить</button>
+        </div>
+
+        <!-- Ссылка на чат -->
+        <div style="text-align: center; margin-top: 30px;">
+            <a href="/chat" class="chat-link">💬 Перейти в чат</a>
+        </div>
+
+        <!-- Модальное окно редактирования -->
+        <div id="editModal" class="modal" style="display:none;">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h3>Редактировать игру</h3>
+                <input type="hidden" id="editId">
+                <input type="text" id="editName" placeholder="Название">
+                <input type="text" id="editPrice" placeholder="Цена">
+                <input type="text" id="editGenre" placeholder="Жанр">
+                <button id="saveEditBtn">Сохранить</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Чат - Игровой клуб Энигма</title>
+    <link rel="stylesheet" href="/style.css">
+    <style>
+        .chat-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: #f0f0f0;
+            border-radius: 10px;
+            overflow: hidden;
+            display: flex;
+            height: 80vh;
+        }
+        
+        .users-sidebar {
+            width: 250px;
+            background-color: #16213e;
+            color: #ffa500;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        
+        .users-sidebar h3 {
+            margin-top: 0;
+            margin-bottom: 20px;
+            color: #ff4500;
+        }
+        
+        .users-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .users-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid #ffa50033;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .online-dot {
+            width: 10px;
+            height: 10px;
+            background-color: #00ff00;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        
+        .chat-main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .message {
+            padding: 8px 12px;
+            border-radius: 8px;
+            max-width: 70%;
+        }
+        
+        .message.system {
+            background-color: #ddd;
+            color: #666;
+            text-align: center;
+            align-self: center;
+            font-style: italic;
+            max-width: 90%;
+        }
+        
+        .message.self {
+            background-color: #16213e;
+            color: #ffa500;
+            align-self: flex-end;
+        }
+        
+        .message.other {
+            background-color: white;
+            color: #333;
+            align-self: flex-start;
+            border-left: 3px solid #ff4500;
+        }
+        
+        .message-header {
+            font-size: 12px;
+            margin-bottom: 5px;
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+        }
+        
+        .message-name {
+            font-weight: bold;
+        }
+        
+        .message-time {
+            color: #999;
+        }
+        
+        .message-text {
+            word-wrap: break-word;
+        }
+        
+        .typing-indicator {
+            padding: 10px 20px;
+            color: #999;
+            font-style: italic;
+            font-size: 12px;
+            min-height: 35px;
+        }
+        
+        .chat-input-area {
+            display: flex;
+            padding: 20px;
+            gap: 10px;
+            border-top: 1px solid #ddd;
+            background-color: white;
+        }
+        
+        .chat-input-area input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        
+        .chat-input-area button {
+            padding: 10px 20px;
+            background-color: #16213e;
+            color: #ffa500;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        .chat-input-area button:hover {
+            background-color: #ff4500;
+            color: white;
+        }
+        
+        .login-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        .login-box {
+            background-color: #f0f0f0;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .login-box input {
+            padding: 10px;
+            margin: 10px 0;
+            width: 250px;
+        }
+        
+        .back-link {
+            display: inline-block;
+            margin: 20px;
+            color: #ffa500;
+            text-decoration: none;
+        }
+        
+        .back-link:hover {
+            color: #ff4500;
+        }
+    </style>
+</head>
+<body>
+    <a href="/" class="back-link">← Вернуться на главную</a>
+    
+    <div id="loginOverlay" class="login-overlay">
+        <div class="login-box">
+            <h2>🎮 Вход в чат</h2>
+            <p>Введите ваше имя для общения</p>
+            <input type="text" id="userNameInput" placeholder="Ваше имя" maxlength="20">
+            <br>
+            <button id="joinBtn">Войти в чат</button>
+        </div>
+    </div>
+    
+    <div id="chatContainer" class="chat-container" style="display: none;">
+        <div class="users-sidebar">
+            <h3>👥 Онлайн</h3>
+            <ul id="usersList" class="users-list"></ul>
+        </div>
+        
+        <div class="chat-main">
+            <div id="chatMessages" class="chat-messages"></div>
+            <div id="typingIndicator" class="typing-indicator"></div>
+            <div class="chat-input-area">
+                <input type="text" id="messageInput" placeholder="Введите сообщение..." disabled>
+                <button id="sendBtn" disabled>Отправить</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/chat.js"></script>
+</body>
+</html>
