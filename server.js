@@ -40,8 +40,16 @@ app.post('/api/items', rest.addItem);
 app.put('/api/items/:id', rest.updateItem);
 app.delete('/api/items/:id', rest.deleteItem);
 
+// ========== Функция для московского времени ==========
+function getMoscowTime() {
+    const now = new Date();
+    // Смещение UTC+3 (Москва)
+    const moscowTime = new Date(now.getTime() + (3 * 60 * 60 * 1000));
+    return moscowTime.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
+}
+
 // ========== WebSocket (Socket.IO) ==========
-const users = {};  // { socketId: { id, name } }
+const users = {};
 
 io.on('connection', (socket) => {
     console.log('Новый пользователь подключился:', socket.id);
@@ -59,7 +67,7 @@ io.on('connection', (socket) => {
             userId: 'system',
             userName: 'Система',
             message: `${userName} присоединился к чату`,
-            time: new Date().toLocaleTimeString()
+            time: getMoscowTime()
         });
         
         console.log(`Пользователь ${userName} присоединился`);
@@ -73,19 +81,7 @@ io.on('connection', (socket) => {
                 userId: socket.id,
                 userName: user.name,
                 message: data.message,
-                time: new Date().toLocaleTimeString()
-            });
-        }
-    });
-    
-    // Пользователь печатает...
-    socket.on('typing', (isTyping) => {
-        const user = users[socket.id];
-        if (user) {
-            socket.broadcast.emit('user typing', {
-                userId: socket.id,
-                userName: user.name,
-                isTyping: isTyping
+                time: getMoscowTime()
             });
         }
     });
@@ -104,7 +100,7 @@ io.on('connection', (socket) => {
                 userId: 'system',
                 userName: 'Система',
                 message: `${user.name} покинул чат`,
-                time: new Date().toLocaleTimeString()
+                time: getMoscowTime()
             });
             
             console.log(`Пользователь ${user.name} отключился`);
@@ -112,7 +108,6 @@ io.on('connection', (socket) => {
     });
 });
 
-// Запуск сервера
 server.listen(PORT, () => {
     console.log(`Сервер запущен на http://localhost:${PORT}`);
 });

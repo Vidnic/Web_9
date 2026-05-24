@@ -9,9 +9,6 @@ const messageInput = document.getElementById('messageInput');
 const sendBtn = document.getElementById('sendBtn');
 const chatMessages = document.getElementById('chatMessages');
 const usersList = document.getElementById('usersList');
-const typingIndicator = document.getElementById('typingIndicator');
-
-let typingTimeout = null;
 
 // Подключение к чату
 function connectToChat(userName) {
@@ -41,13 +38,6 @@ function connectToChat(userName) {
     messageInput.onkeypress = (e) => {
         if (e.key === 'Enter') {
             sendMessage();
-        } else {
-            // Пользователь печатает
-            socket.emit('typing', true);
-            clearTimeout(typingTimeout);
-            typingTimeout = setTimeout(() => {
-                socket.emit('typing', false);
-            }, 1000);
         }
     };
     
@@ -64,9 +54,6 @@ function sendMessage() {
     socket.emit('chat message', { message: message });
     messageInput.value = '';
     messageInput.focus();
-    
-    // Сбрасываем индикатор печатания
-    socket.emit('typing', false);
 }
 
 // Добавление сообщения в чат
